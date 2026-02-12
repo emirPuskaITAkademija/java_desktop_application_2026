@@ -18,7 +18,7 @@ public class ButtonPanel2 extends JPanel {
     private final JButton enableButton;
 
     public ButtonPanel2() {
-        Icon rightIcon = iconLoader.loadIcon("right.gif");
+        Icon rightIcon = iconLoader.loadIcon("one/right.gif");
         ActionListener disableActionListener = this::onButtonClick;
         this.disableButton = new JButton("Disable Button", rightIcon);
         this.disableButton.setMnemonic(KeyEvent.VK_D);
@@ -28,12 +28,12 @@ public class ButtonPanel2 extends JPanel {
         this.disableButton.setVerticalTextPosition(SwingConstants.CENTER);
 
 
-        Icon middleIcon = iconLoader.loadIcon("middle.gif");
+        Icon middleIcon = iconLoader.loadIcon("one/middle.gif");
         this.middleButton = new JButton("Middle Button", middleIcon);
         this.middleButton.setHorizontalTextPosition(SwingConstants.CENTER);
         this.middleButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-        Icon leftIcon = iconLoader.loadIcon("left.gif");
+        Icon leftIcon = iconLoader.loadIcon("one/left.gif");
         ActionListener actionListener = this::onButtonClick;
         this.enableButton = new JButton("Enable Button", leftIcon);
         this.enableButton.setMnemonic(KeyEvent.VK_E);

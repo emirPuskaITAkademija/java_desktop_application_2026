@@ -63,7 +63,7 @@ public class CheckBoxPanel extends JPanel {
     private void updatePicture() {
         IconLoader iconLoader = new IconLoader(CheckBoxPanel.class);
         //inicijalno će biti učitano geek/geek-cght
-        String relativePath = "geek/geek-" + pictureChoice + ".gif";
+        String relativePath = "geek1/geek-" + pictureChoice + ".png";
         Icon imageIcon = iconLoader.loadIcon(relativePath);
         pictureLabel.setIcon(imageIcon);
     }

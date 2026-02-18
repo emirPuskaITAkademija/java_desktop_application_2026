@@ -71,7 +71,6 @@ public class CheckBoxPanel extends JPanel {
     /**
      * JCheckBox <-------- event -------> CheckBoxListener(ItemListener)
      */
-
     private class CheckBoxListener implements ItemListener {
 
         @Override

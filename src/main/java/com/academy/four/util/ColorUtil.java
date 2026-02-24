@@ -8,6 +8,8 @@ public class ColorUtil {
         return "#%02X%02X%02X".formatted(color.getRed(), color.getGreen(), color.getBlue());
     }
 
+
+    // String -> java.awt.Color
     public static Color stringToColor(String color) {
         if(color == null || color.isEmpty()) return null;
         if(color.startsWith("#")) {

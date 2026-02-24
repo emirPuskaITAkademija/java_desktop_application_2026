@@ -1,6 +1,7 @@
 package com.academy.four.dao.player;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
@@ -12,12 +13,14 @@ public class ColorCellRenderer implements TableCellRenderer {
                                                    boolean isSelected,
                                                    boolean hasFocus,
                                                    int row, int column) {
-        JLabel label = new JLabel();
+        JLabel colorLabel = new JLabel();
         Color newColor = (Color) value;
-        label.setBackground(newColor);
-        label.setOpaque(true);//background se neće vidjeti
-        label.setText("");
-        return label;
-
+        colorLabel.setBackground(newColor);
+        colorLabel.setOpaque(true);//background se neće vidjeti
+        colorLabel.setText("");
+        String tooltipText = "RGB value: %s, %s, %s".formatted(newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+        colorLabel.setToolTipText(tooltipText);
+        colorLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        return colorLabel;
     }
 }

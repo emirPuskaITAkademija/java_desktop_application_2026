@@ -38,13 +38,54 @@ public class PlayerInfoDao implements Dao<PlayerInfo> {
     }
 
     @Override
-    public boolean update(PlayerInfo entity) {
-        return false;
+    public boolean update(PlayerInfo playerInfo) {
+        String sqlUpdate = """
+                UPDATE player_info
+                SET first_name = ?,
+                    last_name = ?,
+                    sport = ?,
+                    years = ?,
+                    vegetarian = ?,
+                    color = ?
+                WHERE id = ?
+                """;
+        ConnectionPool connectionPool = ConnectionPool.instance();
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
+            preparedStatement.setString(1, playerInfo.getFirstName());
+            preparedStatement.setString(2, playerInfo.getLastName());
+            preparedStatement.setString(3, playerInfo.getSport());
+            preparedStatement.setInt(4, playerInfo.getYears());
+            preparedStatement.setBoolean(5, playerInfo.isVegetarian());
+            String hexColor = ColorUtil.colorToString(playerInfo.getColor());
+            preparedStatement.setString(6, hexColor);
+            preparedStatement.setInt(7, playerInfo.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            connectionPool.releaseConnection(connection);
+        }
+        return true;
     }
 
     @Override
-    public boolean delete(PlayerInfo entity) {
-        return false;
+    public boolean delete(PlayerInfo playerInfo) {
+        String sqlDelete = """
+                DELETE FROM player_info
+                WHERE id = ?
+                """;
+        ConnectionPool pool = ConnectionPool.instance();
+        Connection connection = pool.getConnection();
+        try (PreparedStatement ps = connection.prepareStatement(sqlDelete)) {
+            ps.setInt(1, playerInfo.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error while deleting record: " + e.getMessage());
+        } finally {
+            pool.releaseConnection(connection);
+        }
+        return true;
     }
 
     @Override
@@ -72,6 +113,7 @@ public class PlayerInfoDao implements Dao<PlayerInfo> {
                 playerInfo.setVegetarian(resultSet.getBoolean("vegetarian"));
                 Color color = ColorUtil.stringToColor(resultSet.getString("color"));
                 playerInfo.setColor(color);
+
                 players.add(playerInfo);
             }
         } catch (SQLException e) {

@@ -26,10 +26,20 @@
             <artifactId>flatlaf</artifactId>
             <version>3.5.1</version> <!-- Check for latest version -->
         </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-codec -->
         <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>svgSalamander</artifactId>
-            <version>1.1.4</version>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-codec</artifactId>
+            <version>1.19</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-transcoder</artifactId>
+            <version>1.19</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

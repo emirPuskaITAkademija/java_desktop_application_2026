@@ -7,8 +7,9 @@ import java.awt.event.ActionListener;
 
 public enum ActionButtonFactory {
 
-    ADD("Add Player", "player/add-player.png"),
-    DELETE("Delete", "player/delete-player.png"),;
+    ADD("Add Player", "player/add-player.svg"),
+    DELETE("Delete", "player/delete_player.svg"),
+    EDIT("Edit","player/edit_player.svg" ),;
 
 
     private final String buttonText;
@@ -22,7 +23,7 @@ public enum ActionButtonFactory {
 
     public JButton getButton() {
         Icon buttonIcon = iconLoader.loadIcon(iconPath);
-        JButton button = new JButton(buttonIcon);
+        JButton button = new JButton(buttonText, buttonIcon);
         button.setActionCommand(buttonText);
         button.setOpaque(true);
         return button;

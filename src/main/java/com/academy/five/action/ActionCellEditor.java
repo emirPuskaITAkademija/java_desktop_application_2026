@@ -1,12 +1,11 @@
 package com.academy.five.action;
 
 import com.academy.four.dao.player.PlayerInfo;
-import com.academy.four.dao.player.PlayerInfoDao;
 import com.academy.four.gui.PlayerInfoTableModel;
+import com.academy.six.PlayerInfoEditFrame;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -22,11 +21,12 @@ public class ActionCellEditor extends AbstractCellEditor implements TableCellEdi
                                                  int column) {
         this.currentValue = (ActionColumnModel) value;
         JPanel panel = new JPanel();
+        panel.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         JButton deleteButton = ActionButtonFactory.DELETE.getButton(e -> onDeleteButtonClick(table));
-//        JButton addButton = ActionButtonFactory.ADD.getButton(this::onAddButtonClick);
+        JButton editButton = ActionButtonFactory.EDIT.getButton(e -> onEditButtonClick(table));
 
         panel.add(deleteButton);
-//        panel.add(addButton);
+        panel.add(editButton);
         return panel;
     }
 
@@ -37,17 +37,21 @@ public class ActionCellEditor extends AbstractCellEditor implements TableCellEdi
     }
 
     private void onDeleteButtonClick(JTable table) {
-        PlayerInfoTableModel playerInfoTableModel = (PlayerInfoTableModel)table.getModel();
+        PlayerInfoTableModel playerInfoTableModel = (PlayerInfoTableModel) table.getModel();
         int result = JOptionPane.showConfirmDialog(null,
                 "Are you sure that you want to delete this player ? "
                 , "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if(result == JOptionPane.YES_OPTION){
+        if (result == JOptionPane.YES_OPTION) {
             PlayerInfo playerInfo = currentValue.getPlayerInfo();
             playerInfoTableModel.deleteExistingPlayer(playerInfo);
         }
     }
 
-    private void onAddButtonClick(ActionEvent event) {
-        //TODO
+    private void onEditButtonClick(JTable table) {
+        PlayerInfoTableModel playerInfoTableModel = (PlayerInfoTableModel) table.getModel();
+        PlayerInfo playerInfo = currentValue.getPlayerInfo();
+        PlayerInfoEditFrame playerInfoEditFrame = new PlayerInfoEditFrame(playerInfo, playerInfoTableModel::updatePlayerInfo);
+        playerInfoEditFrame.setVisible(true);
     }
+
 }

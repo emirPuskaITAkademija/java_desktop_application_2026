@@ -6,12 +6,16 @@ import java.awt.*;
 
 public class ActionCellRenderer implements TableCellRenderer {
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table,
+                                                   Object value,
+                                                   boolean isSelected, boolean hasFocus, int row, int column) {
+
         JButton deleteButton = ActionButtonFactory.DELETE.getButton();
-//        JButton addButton = ActionButtonFactory.ADD.getButton();
+        JButton editButton = ActionButtonFactory.EDIT.getButton();
         JPanel panel = new JPanel();
+        panel.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         panel.add(deleteButton);
-//        panel.add(addButton);
+        panel.add(editButton);
         return panel;
     }
 }

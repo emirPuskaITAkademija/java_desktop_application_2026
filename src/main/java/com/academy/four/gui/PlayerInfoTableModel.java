@@ -99,4 +99,17 @@ public class PlayerInfoTableModel extends AbstractTableModel {
         fireTableDataChanged();
         playerInfoDao.delete(playerInfo);
     }
+
+    public void addNewPlayerInfo(PlayerInfo playerInfo) {
+        playerInfoDao.save(playerInfo);
+        rawData.add(playerInfo);
+        fireTableDataChanged();
+    }
+
+    public void updatePlayerInfo(PlayerInfo playerInfo) {
+        rawData.remove(playerInfo);
+        playerInfoDao.update(playerInfo);
+        rawData.add(playerInfo);
+        fireTableDataChanged();
+    }
 }

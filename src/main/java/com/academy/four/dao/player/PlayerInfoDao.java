@@ -37,6 +37,8 @@ public class PlayerInfoDao implements Dao<PlayerInfo> {
         return true;
     }
 
+    //ZADAĆA
+    //try-with-resource -> 1. connection.close() 2. connectionPool.releaseConnection(connection)
     @Override
     public boolean update(PlayerInfo playerInfo) {
         String sqlUpdate = """

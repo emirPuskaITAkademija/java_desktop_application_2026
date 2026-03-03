@@ -5,14 +5,12 @@ import com.academy.five.CustomTableColorCellRenderer;
 import com.academy.five.action.ActionCellEditor;
 import com.academy.five.action.ActionCellRenderer;
 import com.academy.five.action.ActionColumnModel;
-import com.academy.four.dao.player.PlayerInfo;
 import com.academy.four.gui.PlayerInfoTableModel;
 import com.academy.seven.PlayerInfoRowFilter;
 import com.academy.seven.SearchPlayerDocumentListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;

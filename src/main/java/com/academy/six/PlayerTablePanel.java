@@ -30,7 +30,7 @@ public class PlayerTablePanel extends JPanel {
 
         table.setFillsViewportHeight(true);
         add(new JScrollPane(table));
-        add(new PlayerFormPanel(this::acceptPlayerInfo));
+        add(new PlayerFormPanel(tableModel::addNewPlayerInfo));
     }
 
     private JTable createTable(PlayerInfoTableModel tableModel) {
@@ -60,8 +60,8 @@ public class PlayerTablePanel extends JPanel {
     }
 
 
-    //        onAddPlayerConsumer.accept(playerInfo);
-    private void acceptPlayerInfo(PlayerInfo playerInfo) {
-        tableModel.addNewPlayerInfo(playerInfo);
-    }
+//    //        onAddPlayerConsumer.accept(playerInfo);
+//    private void acceptPlayerInfo(PlayerInfo playerInfo) {
+//        tableModel.addNewPlayerInfo(playerInfo);
+//    }
 }

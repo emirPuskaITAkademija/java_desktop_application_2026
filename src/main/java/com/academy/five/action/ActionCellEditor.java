@@ -53,5 +53,4 @@ public class ActionCellEditor extends AbstractCellEditor implements TableCellEdi
         PlayerInfoEditFrame playerInfoEditFrame = new PlayerInfoEditFrame(playerInfo, playerInfoTableModel::updatePlayerInfo);
         playerInfoEditFrame.setVisible(true);
     }
-
 }

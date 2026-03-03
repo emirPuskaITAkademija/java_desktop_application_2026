@@ -17,7 +17,13 @@ import static com.academy.six.GridBagConstraintHelper.gbc;
  * <p>
  * JTable <--- TableModel ---> podacima PlayerInfoDao
  * JSpinner <---- SpinnerNumberModel podatke
- * PlayerFormPanel <---- Model
+ * PlayerFormPanel <---- FormSnapshot(PlayerInfo)
+ *
+ * <p>
+ *     Dvije svrhe postojanja:
+ *     1. POTPUNO novi PlayerInfo objekat
+ *     2. EDITUJE postojeći PlayerInfo
+ * </p>
  *
  * <ZADACA>
  * Ispraviti PlayerFormPanel na način da sačuva id od PlayerInfor objekta.
@@ -32,33 +38,37 @@ public class PlayerFormPanel extends JPanel {
     private final JButton pickColorButton = new JButton("Pick Color");
     private final JButton addPlayerButton = new JButton("Add Player");
 
-    private final FormModel formModel = new FormModel(Color.WHITE);
+    private Color chosenColor = Color.WHITE;
+    private final PlayerInfo playerInfo;
 
-    public PlayerFormPanel(Consumer<PlayerInfo> onAddPlayerConsumer) {
-        super(new GridBagLayout());
-        setBorder(new EmptyBorder(15, 0, 0, 0));
-        pickColorButton.addActionListener(this::onColorPickClick);
-        addPlayerButton.addActionListener(e -> onAddPlayerClick(onAddPlayerConsumer));
-        buildLayout();
+    public PlayerFormPanel(Consumer<PlayerInfo> playerInfoConsumer) {
+        this(new PlayerInfo(), playerInfoConsumer);
     }
 
-    public PlayerFormPanel(PlayerInfo playerInfo, Consumer<PlayerInfo> onEditPlayerConsumer) {
+    public PlayerFormPanel(PlayerInfo playerInfo, Consumer<PlayerInfo> playerInfoConsumer) {
         super(new GridBagLayout());
+        this.playerInfo = playerInfo;
+
         setBorder(new EmptyBorder(15, 0, 0, 0));
         pickColorButton.addActionListener(this::onColorPickClick);
         addPlayerButton.setText("Edit Player");
-        addPlayerButton.addActionListener(e -> onAddPlayerClick(onEditPlayerConsumer));
-        initialize(playerInfo);
+        addPlayerButton.addActionListener(e -> onAddOrEditPlayerButtonClick(playerInfoConsumer));
+        initialize();
         buildLayout();
     }
 
-    private void initialize(PlayerInfo playerInfo) {
+    private void initialize() {
         firstNameTextField.setText(playerInfo.getFirstName());
         lastNameTextField.setText(playerInfo.getLastName());
         sportTextField.setText(playerInfo.getSport());
-        yearsSpinner.setValue(playerInfo.getYears());
+        SpinnerNumberModel spinnerNumberModel =(SpinnerNumberModel) yearsSpinner.getModel();
+        int min = ((Number)spinnerNumberModel.getMinimum()).intValue();
+        int max = ((Number)spinnerNumberModel.getMaximum()).intValue();
+        Integer years = playerInfo.getYears();
+        if(years < min) years = min;
+        if(years > max) years = max;
+        yearsSpinner.setValue(years);
         vegetarianCheckBox.setSelected(playerInfo.isVegetarian());
-
     }
 
 
@@ -86,22 +96,25 @@ public class PlayerFormPanel extends JPanel {
 
 
     private void onColorPickClick(ActionEvent actionEvent) {
-        Color chosenColor = JColorChooser.showDialog(null, "Choose Color", formModel.color());
+        chosenColor = JColorChooser.showDialog(null, "Choose Color", chosenColor);
         if (chosenColor != null) {
-            formModel.setColor(chosenColor);
             pickColorButton.setBackground(chosenColor);
             pickColorButton.setOpaque(true);
             pickColorButton.setBorderPainted(true);
         }
     }
 
-    private void onAddPlayerClick(Consumer<PlayerInfo> onAddPlayerConsumer) {
-        FormSnapshot snapshot = snapshot();
-        if (snapshot.firstName().isBlank() || snapshot.lastName().isBlank()) {
-            JOptionPane.showMessageDialog(null, "First Name and Last Name cannot be empty");
-        }
-        PlayerInfo playerInfo = snapshot.toPlayerInfo();
-        onAddPlayerConsumer.accept(playerInfo);
+    //DODAJEMO novi PlayerInfo..korisnik mijenja u GUI kontrolama vrijednosti i mi ih prebacujemo u playerInfo polja
+    private void onAddOrEditPlayerButtonClick(Consumer<PlayerInfo> playerInfoConsumer) {
+        playerInfo.setFirstName(firstNameTextField.getText());
+        playerInfo.setLastName(lastNameTextField.getText());
+        playerInfo.setSport(sportTextField.getText());
+        playerInfo.setColor(chosenColor);
+        playerInfo.setVegetarian(vegetarianCheckBox.isSelected());
+        playerInfo.setYears(((Number) yearsSpinner.getValue()).intValue());
+
+        playerInfoConsumer.accept(playerInfo); // -> će tek ovdje pozvati tableModel.addNewPlayerInfo(PlayerInfo playerInfo)
+
         clearForm();
     }
 
@@ -111,40 +124,40 @@ public class PlayerFormPanel extends JPanel {
         sportTextField.setText("");
         yearsSpinner.setValue(0);
         vegetarianCheckBox.setSelected(false);
-        formModel.setColor(Color.WHITE);
+        chosenColor = Color.WHITE;
         pickColorButton.setBackground(Color.WHITE);
     }
 
-    private FormSnapshot snapshot() {
-        return new FormSnapshot(
-                firstNameTextField.getText().trim(),
-                lastNameTextField.getText().trim(),
-                sportTextField.getText().trim(),
-                ((Number) yearsSpinner.getValue()).intValue(),
-                vegetarianCheckBox.isSelected(),
-                formModel.color()
-        );
-    }
+//    private FormSnapshot snapshot() {
+//        return new FormSnapshot(
+//                firstNameTextField.getText().trim(),
+//                lastNameTextField.getText().trim(),
+//                sportTextField.getText().trim(),
+//                ((Number) yearsSpinner.getValue()).intValue(),
+//                vegetarianCheckBox.isSelected(),
+//                formModel.color()
+//        );
+//    }
 
     /**
      * OOP model(mutabilan ali lokalno i kontrolisano definiran i mutira lokalno).
      * Može se lako pretvoriti u immutable.
      */
-    static final class FormModel {
-        private Color color;
-
-        FormModel(Color color) {
-            this.color = color;
-        }
-
-        Color color() {
-            return color;
-        }
-
-        void setColor(Color color) {
-            this.color = color;
-        }
-    }
+//    static final class FormModel {
+//        private Color color;
+//
+//        FormModel(Color color) {
+//            this.color = color;
+//        }
+//
+//        Color color() {
+//            return color;
+//        }
+//
+//        void setColor(Color color) {
+//            this.color = color;
+//        }
+//    }
 
     /**
      * FP : immutabilan snapshot forme
@@ -155,24 +168,24 @@ public class PlayerFormPanel extends JPanel {
      * <p>
      * record je praktično ista stvar kao i klasa koja želi immutabilne objekte po svom šablonu da se kreiraju.
      */
-    record FormSnapshot(String firstName,
-                        String lastName,
-                        String sport,
-                        int years,
-                        boolean vegetarian,
-                        Color color) {
-
-
-        PlayerInfo toPlayerInfo() {
-            PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.setFirstName(firstName);
-            playerInfo.setLastName(lastName);
-            playerInfo.setSport(sport);
-            playerInfo.setYears(years);
-            playerInfo.setVegetarian(vegetarian);
-            playerInfo.setColor(color);
-            return playerInfo;
-        }
-    }
+//    record FormSnapshot(String firstName,
+//                        String lastName,
+//                        String sport,
+//                        int years,
+//                        boolean vegetarian,
+//                        Color color) {
+//
+//
+//        PlayerInfo toPlayerInfo() {
+//            PlayerInfo playerInfo = new PlayerInfo();
+//            playerInfo.setFirstName(firstName);
+//            playerInfo.setLastName(lastName);
+//            playerInfo.setSport(sport);
+//            playerInfo.setYears(years);
+//            playerInfo.setVegetarian(vegetarian);
+//            playerInfo.setColor(color);
+//            return playerInfo;
+//        }
+//    }
 
 }

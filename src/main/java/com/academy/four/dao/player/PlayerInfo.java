@@ -2,6 +2,7 @@ package com.academy.four.dao.player;
 
 import java.awt.*;
 import java.io.Serializable;
+
 // Entity(PlayerInfo)  <-> tabela(player_info)
 public class PlayerInfo implements Serializable {
 
@@ -13,7 +14,8 @@ public class PlayerInfo implements Serializable {
     private boolean vegetarian;
     private Color color;
 
-    public PlayerInfo() {}
+    public PlayerInfo() {
+    }
 
     public PlayerInfo(Integer id, String firstName, String lastName, String sport, Integer years, boolean vegetarian, Color color) {
         this.id = id;
@@ -58,7 +60,7 @@ public class PlayerInfo implements Serializable {
     }
 
     public Integer getYears() {
-        return years;
+        return years == null ? 0 : years;
     }
 
     public void setYears(Integer years) {

@@ -9,7 +9,7 @@ public class PlayerInfo implements Serializable {
     private Integer id;
     private String firstName;
     private String lastName;
-    private String sport;
+    private String sport;//private Sport sport
     private Integer years;
     private boolean vegetarian;
     private Color color;

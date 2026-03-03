@@ -1,4 +1,4 @@
-package com.academy.four.dao.player;
+package com.academy.four.gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

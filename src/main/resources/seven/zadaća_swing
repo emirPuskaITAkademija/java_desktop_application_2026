@@ -1,0 +1,7 @@
+
+1. Promijeniti nazive kolona u finalnoj tabeli
+2. Konzistentno aplicirati JComboBox za odabir sporta
+ 2.1 formi za dodavanje novog player-a
+ 2.2 formi za editovanje postojećeg playera
+3. Listu sportova dovući iz BAZE podataka. Dakle snimiti sports u bazi podataka i izmijeniti strukturu
+naše baze tako da player_info tabela umjesto sport tekstualne kolone ima FK(Foreign Key) na sport tabelu.

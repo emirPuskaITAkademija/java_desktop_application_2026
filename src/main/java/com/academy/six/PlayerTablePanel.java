@@ -5,6 +5,7 @@ import com.academy.five.CustomTableColorCellRenderer;
 import com.academy.five.action.ActionCellEditor;
 import com.academy.five.action.ActionCellRenderer;
 import com.academy.five.action.ActionColumnModel;
+import com.academy.four.dao.player.Sport;
 import com.academy.four.gui.PlayerInfoTableModel;
 import com.academy.seven.PlayerInfoRowFilter;
 import com.academy.seven.SearchPlayerDocumentListener;
@@ -18,6 +19,8 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.Document;
 import java.awt.*;
 
+import static com.academy.four.dao.player.Sport.SPORTS;
+
 // JTable <---- PlayerInfoTableModel(TableModel) ---> podacima PlayerInfoDao
 // PlayerFormPanel
 
@@ -25,37 +28,7 @@ import java.awt.*;
  * Najčišće rješenje za SEARCH u Swing je: TableRowSOrter + RowFilter : JTExtField
  */
 public class PlayerTablePanel extends JPanel {
-    private static final String[] SPORTS = {
-            "Football",
-            "Basketball",
-            "Handball",
-            "Volleyball",
-            "Tennis",
-            "Table Tennis",
-            "Badminton",
-            "Athletics",
-            "Swimming",
-            "Water Polo",
-            "Boxing",
-            "Karate",
-            "Taekwondo",
-            "Judo",
-            "Wrestling",
-            "Gymnastics",
-            "Cycling",
-            "Skiing",
-            "Snowboarding",
-            "Ice Hockey",
-            "Rugby",
-            "Cricket",
-            "Baseball",
-            "Golf",
-            "Rowing",
-            "Sailing",
-            "Climbing",
-            "Martial Arts",
-            "Esports"
-    };
+
     /**
      * Kako da filtriramo prema searchField tj. našoj @{@link JTextField}
      * <li>1. {@link JTextField} je povezan sa {@link Document}</li>
@@ -92,7 +65,7 @@ public class PlayerTablePanel extends JPanel {
         table.setFillsViewportHeight(true);
         TableColumnModel tableColumnModel = table.getColumnModel();
         TableColumn sportColumn = tableColumnModel.getColumn(3);
-        sportColumn.setCellEditor(new DefaultCellEditor(new JComboBox<>(SPORTS)));
+        sportColumn.setCellEditor(new DefaultCellEditor(new JComboBox<String>(SPORTS)));
 
         add(new JScrollPane(table));
         add(new PlayerFormPanel(tableModel::addNewPlayerInfo));

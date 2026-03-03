@@ -53,22 +53,25 @@ public class PlayerFormPanel extends JPanel {
         pickColorButton.addActionListener(this::onColorPickClick);
         addPlayerButton.setText("Edit Player");
         addPlayerButton.addActionListener(e -> onAddOrEditPlayerButtonClick(playerInfoConsumer));
-        initialize();
+        editPlayerInit();
         buildLayout();
     }
 
-    private void initialize() {
-        firstNameTextField.setText(playerInfo.getFirstName());
-        lastNameTextField.setText(playerInfo.getLastName());
-        sportTextField.setText(playerInfo.getSport());
-        SpinnerNumberModel spinnerNumberModel =(SpinnerNumberModel) yearsSpinner.getModel();
-        int min = ((Number)spinnerNumberModel.getMinimum()).intValue();
-        int max = ((Number)spinnerNumberModel.getMaximum()).intValue();
-        Integer years = playerInfo.getYears();
-        if(years < min) years = min;
-        if(years > max) years = max;
-        yearsSpinner.setValue(years);
-        vegetarianCheckBox.setSelected(playerInfo.isVegetarian());
+    private void editPlayerInit() {
+        if(playerInfo!=null && playerInfo.getId()!=null){
+            firstNameTextField.setText(playerInfo.getFirstName());
+            lastNameTextField.setText(playerInfo.getLastName());
+            sportTextField.setText(playerInfo.getSport());
+            SpinnerNumberModel spinnerNumberModel =(SpinnerNumberModel) yearsSpinner.getModel();
+            int min = ((Number)spinnerNumberModel.getMinimum()).intValue();
+            int max = ((Number)spinnerNumberModel.getMaximum()).intValue();
+            Integer years = playerInfo.getYears();
+            if(years < min) years = min;
+            if(years > max) years = max;
+            yearsSpinner.setValue(years);
+            vegetarianCheckBox.setSelected(playerInfo.isVegetarian());
+            chosenColor = playerInfo.getColor();
+        }
     }
 
 

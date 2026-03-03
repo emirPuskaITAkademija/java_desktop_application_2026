@@ -107,9 +107,9 @@ public class PlayerInfoTableModel extends AbstractTableModel {
     }
 
     public void updatePlayerInfo(PlayerInfo playerInfo) {
-        rawData.remove(playerInfo);
+        int index =  rawData.indexOf(playerInfo);
+        rawData.set(index,playerInfo);
         playerInfoDao.update(playerInfo);
-        rawData.add(playerInfo);
         fireTableDataChanged();
     }
 }
